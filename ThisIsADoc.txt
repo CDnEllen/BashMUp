@@ -1,8 +1,0 @@
-a BETTER test doc
-
-newlines ahoy!
-
-test?	tabby
-tab	tab
-
-newlines
