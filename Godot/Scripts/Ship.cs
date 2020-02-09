@@ -60,6 +60,7 @@ public class Ship : Node2D
 
 		if (rollAvailable)
 		{
+            // Add true/false to the input queue when we stop/start pushing in the roll direction
 			if (inputDir != new Vector2())
 			{
 				if (rollInputQueue.Count == 0 || rollInputQueue.Count == 2)
