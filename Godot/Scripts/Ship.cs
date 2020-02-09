@@ -127,6 +127,11 @@ public class Ship : Node2D
 				}
 			}
 		}
+
+		Vector2 globalPos = GlobalPosition;
+		globalPos.x = Mathf.Clamp(globalPos.x, -640, 640);
+		globalPos.y = Mathf.Clamp(globalPos.y, -360, 360);
+		GlobalPosition = globalPos;
 	}
 
 	private void ResetRollVariables()
