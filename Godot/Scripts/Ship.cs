@@ -4,10 +4,6 @@ using System.Collections.Generic;
 
 public class Ship : Node2D
 {
-	// Declare member variables here. Examples:
-	// private int a = 2;
-	// private string b = "text";
-
 	private int speed = 10;
 
 	// Bash vars
@@ -131,8 +127,6 @@ public class Ship : Node2D
 				}
 			}
 		}
-		//var result = "blah " + string.Join(", ", rollInputQueue.ToArray());
-		//GD.Print(result);
 	}
 
 	private void ResetRollVariables()
