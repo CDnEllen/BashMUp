@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class Ship : Node2D
+public class Ship : KinematicBody2D
 {
 	private int speed = 10;
 
@@ -28,8 +28,7 @@ public class Ship : Node2D
 		
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(float delta)
+	public override void _PhysicsProcess(float delta)
 	{
 		// Movement
 		Vector2 move_input = new Vector2();
@@ -46,12 +45,13 @@ public class Ship : Node2D
 			move_input = move_input.Normalized();
 		if (bashVelocity != Vector2.Zero)
 			move_input.y = 0;
-		Position += move_input * speed;
+
+		if (move_input != Vector2.Zero)
+			MoveAndCollide(move_input * speed);
 
 		// Bashing
 		if (Input.IsActionPressed("bash_charge_1") && Input.IsActionPressed("bash_charge_2"))
 		{
-			GD.Print(bashChargeFrames);
 			bashChargeFrames++;
 		}
 		else
@@ -60,7 +60,15 @@ public class Ship : Node2D
 				bashVelocity = new Vector2(0.0f, -bashChargeFrames / 2);
 			bashChargeFrames = 0;
 		}
-		Position += bashVelocity;
+
+		if (bashVelocity != Vector2.Zero)
+		{
+			KinematicCollision2D result = MoveAndCollide(bashVelocity);
+			if (result != null)
+			{
+				result.Collider.Free();
+			}
+		}
 		bashVelocity /= bashVelocityDropoff;
 		if (bashVelocity.Length() < bashMinVelocity)
 			bashVelocity = new Vector2();
@@ -112,7 +120,7 @@ public class Ship : Node2D
 			// Perform roll if input requirements are met
 			if (rollInputQueue.Count == 3 && rollInputQueue[0] == true && rollInputQueue[1] == false && rollInputQueue[2] == true && rollAvailable == true)
 			{
-				Position += rollDirection * rollSpeed;
+				MoveAndCollide(rollDirection * rollSpeed);
 				rollAvailable = false;
 				ResetRollVariables();
 			}
