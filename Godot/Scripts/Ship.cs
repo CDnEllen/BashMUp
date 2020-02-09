@@ -30,7 +30,7 @@ public class Ship : Node2D
 		// Movement
 		Vector2 move_input = new Vector2();
 		if (Input.IsActionPressed("move_forward")) 
-			move_input.y-= Input.GetActionStrength("move_forward"); ;
+			move_input.y-= Input.GetActionStrength("move_forward");
 		if (Input.IsActionPressed("move_backward"))
 			move_input.y+= Input.GetActionStrength("move_backward");
 		if (Input.IsActionPressed("move_left"))
@@ -60,7 +60,7 @@ public class Ship : Node2D
 
 		if (rollAvailable)
 		{
-            // Add true/false to the input queue when we stop/start pushing in the roll direction
+			// Add true/false to the input queue when we stop/start pushing in the roll direction
 			if (inputDir != new Vector2())
 			{
 				if (rollInputQueue.Count == 0 || rollInputQueue.Count == 2)
@@ -104,8 +104,8 @@ public class Ship : Node2D
 				}
 			}
 		}
-		//var result = "blah " + string.Join(", ", rollInputQueue.ToArray());
-		//GD.Print(result);
+		var result = "blah " + string.Join(", ", rollInputQueue.ToArray());
+		GD.Print(result);
 	}
 
 	private void ResetRollVariables()
