@@ -10,6 +10,14 @@ public class Ship : Node2D
 
 	private int speed = 10;
 
+	// Bash vars
+	private int bashChargeFrames = 0;
+	private int bashMinFrames = 20;
+	private Vector2 bashVelocity;
+	private float bashVelocityDropoff = 1.05f;
+	private float bashMinVelocity = 10;
+
+	// Roll vars
 	private bool rollAvailable = true;
 	private Vector2 rollDirection = new Vector2();
 	private List<bool> rollInputQueue = new List<bool>();
@@ -40,7 +48,26 @@ public class Ship : Node2D
 
 		if (move_input.Length() > 1)
 			move_input = move_input.Normalized();
+		if (bashVelocity != Vector2.Zero)
+			move_input.y = 0;
 		Position += move_input * speed;
+
+		// Bashing
+		if (Input.IsActionPressed("bash_charge_1") && Input.IsActionPressed("bash_charge_2"))
+		{
+			GD.Print(bashChargeFrames);
+			bashChargeFrames++;
+		}
+		else
+		{
+			if (bashChargeFrames > bashMinFrames)
+				bashVelocity = new Vector2(0.0f, -bashChargeFrames / 2);
+			bashChargeFrames = 0;
+		}
+		Position += bashVelocity;
+		bashVelocity /= bashVelocityDropoff;
+		if (bashVelocity.Length() < bashMinVelocity)
+			bashVelocity = new Vector2();
 
 		// Rolling
 		Vector2 inputDir = new Vector2();
@@ -104,8 +131,8 @@ public class Ship : Node2D
 				}
 			}
 		}
-		var result = "blah " + string.Join(", ", rollInputQueue.ToArray());
-		GD.Print(result);
+		//var result = "blah " + string.Join(", ", rollInputQueue.ToArray());
+		//GD.Print(result);
 	}
 
 	private void ResetRollVariables()
