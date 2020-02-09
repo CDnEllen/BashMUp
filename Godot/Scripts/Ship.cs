@@ -10,11 +10,13 @@ public class Ship : Node2D
 
 	private int speed = 10;
 
-	private bool readyToRoll = true;
+	private bool rollAvailable = true;
+	private Vector2 rollDirection = new Vector2();
 	private List<bool> rollInputQueue = new List<bool>();
-	private int rollInputDuration = 100;
+	private int rollInputDuration = 40;
 	private int rollInputCountdown;
 	private bool rollInputStarted = false;
+	private int rollSpeed = 100;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -41,45 +43,75 @@ public class Ship : Node2D
 		Position += move_input * speed;
 
 		// Rolling
-		if (Input.IsActionJustPressed("roll_left")) 
+		Vector2 inputDir = new Vector2();
+		if (Input.IsActionPressed("roll_forward"))
+			inputDir.y--;
+		if (Input.IsActionPressed("roll_backward"))
+			inputDir.y++;
+		if (Input.IsActionPressed("roll_left"))
+			inputDir.x--;
+		if (Input.IsActionPressed("roll_right"))
+			inputDir.x++;
+		if (inputDir != new Vector2())
+			inputDir.Normalized();
+
+		if (inputDir == new Vector2())
+			rollAvailable = true;
+
+		if (rollAvailable)
 		{
-			rollInputQueue.Add(true);
-			if (rollInputStarted == false)
+			if (inputDir != new Vector2())
 			{
-				rollInputStarted = true;
-				rollInputCountdown = rollInputDuration;
+				if (rollInputQueue.Count == 0 || rollInputQueue.Count == 2)
+					rollInputQueue.Add(true);
+
+				if (!rollInputStarted)
+				{
+					rollDirection = inputDir;
+					rollInputStarted = true;
+					rollInputCountdown = rollInputDuration;
+				}
+				else if (rollDirection != inputDir)
+				{
+					ResetRollVariables();
+				}
+			}
+			else if (inputDir == new Vector2() && rollInputStarted)
+			{
+				if (rollInputQueue.Count == 1)
+					rollInputQueue.Add(false);
+			}
+
+			if (rollInputQueue.Count > 3)
+				rollInputQueue.RemoveRange(0, rollInputQueue.Count - 3);
+
+			// Perform roll if input requirements are met
+			if (rollInputQueue.Count == 3 && rollInputQueue[0] == true && rollInputQueue[1] == false && rollInputQueue[2] == true && rollAvailable == true)
+			{
+				Position += rollDirection * rollSpeed;
+				rollAvailable = false;
+				ResetRollVariables();
+			}
+
+			// Timer to cancel roll if second tap isn't sent in time
+			if (rollInputStarted)
+			{
+				rollInputCountdown--;
+				if (rollInputCountdown <= 0)
+				{
+					ResetRollVariables();
+				}
 			}
 		}
-		else if (Input.IsActionJustReleased("roll_left") && rollInputStarted)
-		{
-			rollInputQueue.Add(false);
-		}
-
-		if (rollInputQueue.Count == 3 && rollInputQueue[0] == true && rollInputQueue[1] == false && rollInputQueue[2] == true)
-		{
-			Position += new Vector2(-100.0f, 0.0f);
-			rollInputStarted = false;
-			rollInputCountdown = rollInputDuration;
-			rollInputQueue.Clear();
-		}
-
-		if (rollInputStarted)
-		{
-			rollInputCountdown--;
-			if (rollInputCountdown <= 0)
-			{
-				rollInputStarted = false;
-				rollInputCountdown = rollInputDuration;
-				rollInputQueue.Clear();
-			}
-		}
-
-		if (rollInputQueue.Count > 3)
-		{
-			rollInputQueue.RemoveRange(0, rollInputQueue.Count - 3);
-		}
-
 		//var result = "blah " + string.Join(", ", rollInputQueue.ToArray());
 		//GD.Print(result);
+	}
+
+	private void ResetRollVariables()
+	{
+		rollInputQueue.Clear();
+		rollInputCountdown = rollInputDuration;
+		rollInputStarted = false;
+		rollDirection = new Vector2();
 	}
 }
