@@ -13,7 +13,7 @@ public class Drone : KinematicBody2D
 
 	public override void _PhysicsProcess(float delta)
 	{
-		Vector2 movement = new Vector2(-2.0f, 0.0f);
+		Vector2 movement = new Vector2(0.0f, -2.0f);
 		if (goLeft == false)
 			movement *= -1;
 

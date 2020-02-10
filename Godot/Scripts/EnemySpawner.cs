@@ -23,7 +23,7 @@ public class EnemySpawner : Node2D
 			{
 				var enemyScene = (PackedScene)ResourceLoader.Load("res://Scenes/Drone.tscn");
 				Drone instance = (Drone)enemyScene.Instance();
-				instance.Position = new Vector2(gen.RandfRange(-500f, 500f), gen.RandfRange(-300f, 100f));
+				instance.Position = new Vector2(gen.RandfRange(200f, 900f), gen.RandfRange(-250f, 250f));
 				instance.goLeft = gen.Randf() >= 0.5f;
 				AddChild(instance);
 			}

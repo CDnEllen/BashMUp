@@ -44,7 +44,7 @@ public class Ship : KinematicBody2D
 		if (move_input.Length() > 1)
 			move_input = move_input.Normalized();
 		if (bashVelocity != Vector2.Zero)
-			move_input.y = 0;
+			move_input.x = 0;
 
 		if (move_input != Vector2.Zero)
 			MoveAndCollide(move_input * speed);
@@ -57,7 +57,7 @@ public class Ship : KinematicBody2D
 		else
 		{
 			if (bashChargeFrames > bashMinFrames)
-				bashVelocity = new Vector2(0.0f, -bashChargeFrames / 2);
+				bashVelocity = new Vector2(bashChargeFrames / 2, 0.0f);
 			bashChargeFrames = 0;
 		}
 
@@ -137,8 +137,8 @@ public class Ship : KinematicBody2D
 		}
 
 		Vector2 globalPos = GlobalPosition;
-		globalPos.x = Mathf.Clamp(globalPos.x, -640, 640);
-		globalPos.y = Mathf.Clamp(globalPos.y, -360, 360);
+		globalPos.x = Mathf.Clamp(globalPos.x, -1920/2, 1920/2);
+		globalPos.y = Mathf.Clamp(globalPos.y, -720/2, 720/2);
 		GlobalPosition = globalPos;
 	}
 
