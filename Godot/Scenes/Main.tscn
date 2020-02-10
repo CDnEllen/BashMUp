@@ -13,7 +13,7 @@ script = ExtResource( 3 )
 z_index = -100
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1280, 720 )
+region_rect = Rect2( 0, 0, 5120, 2880 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
