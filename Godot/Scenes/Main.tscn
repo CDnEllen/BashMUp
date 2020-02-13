@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Background.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/SaveLoad.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/EnemySpawner.cs" type="Script" id=3]
 [ext_resource path="res://Scenes/Ship.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/Level.cs" type="Script" id=5]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 3 )
@@ -22,3 +24,11 @@ drag_margin_top = 0.0
 drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 editor_draw_screen = false
+
+[node name="Level" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="SaveLoad" type="Node" parent="Level" groups=[
+"SaveLoad",
+]]
+script = ExtResource( 2 )

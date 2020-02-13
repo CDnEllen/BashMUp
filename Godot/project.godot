@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [debug]
 
 settings/fps/force_fps=60
+gdscript/completion/autocomplete_setters_and_getters=true
 
 [display]
 

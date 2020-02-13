@@ -1,0 +1,47 @@
+# enemy defs
+enemies:
+    filler_00:
+        node: ["filler"] # graphical node object
+        speed: slow # exact speed is set in code
+        hp: 1 # hits to take out
+        attacks: ["bullet"] # attacks defined in code
+        attack_freq: slow # how often the enemy can attack - exact amount defined in code
+    attacker_00:
+        node: ["attacker"]
+        speed: medium
+        hp: 2
+        attacks: ["double_bullet"]
+        attack_freq: fast
+    caster_00:
+        node: ["caster"]
+        speed: very_slow
+        hp: 1
+        attacks: ["spread", "guided_missile"]
+        attack_freq: slow
+
+# wave type defs
+waves:
+    wave_000:
+        type: standard
+        source: ["center_right"]
+        direction: ["center_left"]
+        recycle: immediate # keep sending the surviving members of the wave until they are all dead
+        enemy_selector: all # use all enemies from the enemies list for this wave
+        enemy_selector_count: 1 # make one choice from enemies based on the selector - which is just once, meaning all will be picked, with the numbers being the count of each type
+        enemies: ["filler_00", 3]
+    wave_001:
+        type: standard
+        source: ["center_right"]
+        direction: ["center_left"]
+        recycle: next # add surviving members to the next wave
+        enemy_selector: random_group # pick random selections from enemies - random_group means the numbers are treated as the size of groups, random_individual means they are treated as weights
+        enemy_selector_count: 3 # pick 3 groups
+        enemies: ["filler_00", 3, "attacker_00", 1]
+
+# level defs
+
+levels:
+    level_000:
+        waves: ["wave_000", 5] # this level will spawn waves like this: 000, 000, 000, 000, 000
+    level_001:
+        waves: ["wave_000", 3, "wave_001", 3] # this level will spawn waves like this: 000, 000, 000, 001, 001, 001

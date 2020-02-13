@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Drone.cs" />
     <Compile Include="Scripts\EnemySpawner.cs" />
+    <Compile Include="Scripts\Level.cs" />
     <Compile Include="Scripts\Ship.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
